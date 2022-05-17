@@ -2165,7 +2165,7 @@ export interface definitions {
     /**
      * Format: created is a timestamp with time zone
      */
-    backup_urls: {url: {url: string, created: string}};
+    backup_urls: {[key:string]: {url: string, created: string}};
   };
   user: {
     /**
