@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.4.2](https://github.com/web3-storage/web3.storage/compare/website-v2.4.1...website-v2.4.2) (2022-05-23)
+
+
+### Bug Fixes
+
+* Set fetch date before changing isFetching state ([#1341](https://github.com/web3-storage/web3.storage/issues/1341)) ([0e07f1f](https://github.com/web3-storage/web3.storage/commit/0e07f1f72b3037b56a4a236ffa9696ab982c22f5))
+
 ### [2.4.1](https://github.com/web3-storage/web3.storage/compare/website-v2.4.0...website-v2.4.1) (2022-05-20)
 
 
