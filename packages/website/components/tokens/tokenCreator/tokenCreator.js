@@ -5,6 +5,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import countly from 'lib/countly';
 import Button, { ButtonVariant } from 'components/button/button';
 import { useTokens } from 'components/contexts/tokensContext';
+import { useUser } from 'hooks/use-user';
 
 /**
  * @typedef {Object} TokenCreatorProps
@@ -17,11 +18,12 @@ import { useTokens } from 'components/contexts/tokensContext';
  * @returns
  */
 const TokenCreator = ({ content }) => {
-  const inputRef = useRef(/** @type {HTMLInputElement|null} */ (null));
-  const [inputHasValue, setInputHasValue] = useState(/** @type {boolean} */ (false));
+  const inputRef = useRef(/** @type {HTMLInputElement|null} */(null));
+  const [inputHasValue, setInputHasValue] = useState(/** @type {boolean} */(false));
 
   const { query, push, replace } = useRouter();
   const { tokens, createToken, isCreating, getTokens } = useTokens();
+  const user = useUser();
 
   const onTokenCreate = useCallback(
     async e => {
@@ -30,13 +32,13 @@ const TokenCreator = ({ content }) => {
         countly.events.TOKEN_CREATE,
         !tokens.length
           ? {
-              ui: countly.ui.TOKENS_EMPTY,
-              action: 'New API Token',
-            }
+            ui: countly.ui.TOKENS_EMPTY,
+            action: 'New API Token',
+          }
           : {
-              ui: countly.ui.NEW_TOKEN,
-              action: 'Create new token',
-            }
+            ui: countly.ui.NEW_TOKEN,
+            action: 'Create new token',
+          }
       );
 
       e.preventDefault();
@@ -114,10 +116,16 @@ const TokenCreator = ({ content }) => {
             <button className="token-creator-submit">{inputHasValue ? '→' : '+'}</button>
           </form>
           <Button
+            disabled={user?.info?.tags['HasAccountRestriction']}
             className={clsx('token-creator-create', query.create && 'hidden')}
             href="/account"
             onClick={() => push('/tokens?create=true')}
             variant={ButtonVariant.TEXT}
+            tooltip={
+              user?.info?.tags['HasAccountRestriction']
+                ? 'You are unable to upload files when your account is blocked. Please contact support@web3.storage'
+                : ''
+            }
           >
             {content.prompt}
           </Button>

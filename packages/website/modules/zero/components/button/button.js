@@ -28,17 +28,17 @@ const Button = ({
 }) => {
 
   return (
-    <div className={clsx(className, 'Button')}>
-      { href
+    <div className={clsx(className, 'Button', disabled ? 'disabled' : undefined)}>
+      {href && !disabled
         ? (
           openInNewWindow
-          ?
+            ?
             <a href={href} target="_blank">{children}</a>
-          :
+            :
             <Link href={href}>{children}</Link>
         )
         :
-          <button type={type} onClick={onClick} disabled={disabled}>{children}</button>
+        <button type={type} onClick={onClick} disabled={disabled}>{children}</button>
       }
     </div>
   )

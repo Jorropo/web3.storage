@@ -108,7 +108,7 @@ export class DBClient {
    * @param {string} issuer
    * @return {Promise<import('./db-client-types').UserOutput | undefined>}
    */
-  async getUser (issuer) {
+  async getUser (issuer, { includeTags } = { includeTags: false }) {
     /** @type {{ data: import('./db-client-types').UserOutput[], error: PostgrestError }} */
     const { data, error } = await this._client
       .from('user')
@@ -120,8 +120,11 @@ export class DBClient {
         github,
         publicAddress:public_address,
         created:inserted_at,
-        updated:updated_at
-      `)
+        updated:updated_at${includeTags
+? `,
+        tags:user_tag_user_id_fkey(user_id,id,tag,value)
+      `
+: ''}`)
       .eq('issuer', issuer)
 
     if (error) {

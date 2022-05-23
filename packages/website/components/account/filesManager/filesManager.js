@@ -48,6 +48,7 @@ const FilesManager = ({ className, content, onFileUpload }) => {
   } = useRouter();
   const {
     storageData: { refetch },
+    info,
   } = useUser();
   const [filteredFiles, setFilteredFiles] = useState(files);
   const [sortedFiles, setSortedFiles] = useState(filteredFiles);
@@ -59,7 +60,7 @@ const FilesManager = ({ className, content, onFileUpload }) => {
   const deleteModalState = useState(false);
   const queryOrderRef = useRef(query.order);
 
-  const [selectedFiles, setSelectedFiles] = useState(/** @type {Upload[]} */ ([]));
+  const [selectedFiles, setSelectedFiles] = useState(/** @type {Upload[]} */([]));
   const [isUpdating, setIsUpdating] = useState(false);
   const [nameEditingId, setNameEditingId] = useState();
   const fileRowLabels = content?.table.file_row_labels;
@@ -192,6 +193,7 @@ const FilesManager = ({ className, content, onFileUpload }) => {
         <div className="files-manager-title has-upload-button">
           <div className="title">{content?.heading}</div>
           <Button
+            disabled={info?.tags['HasAccountRestriction']}
             onClick={onFileUpload}
             variant={content?.upload.theme}
             tracking={{
@@ -199,6 +201,11 @@ const FilesManager = ({ className, content, onFileUpload }) => {
               action: content?.upload.action,
               data: { isFirstFile: false },
             }}
+            tooltip={
+              info?.tags['HasAccountRestriction']
+                ? 'You are unable to upload files when your account is blocked. Please contact support@web3.storage'
+                : ''
+            }
           >
             {content?.upload.text}
           </Button>
